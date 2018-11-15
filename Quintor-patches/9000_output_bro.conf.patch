@@ -1,0 +1,25 @@
+--- 9000_output_bro.conf	2018-11-15 12:05:38.547779772 +0100
++++ 9000_output_bro.conf.new	2018-11-15 13:58:53.576269831 +0100
+@@ -2,6 +2,8 @@
+ #         SANS Instructor and author of SANS SEC555: SIEM and Tactical Analytics
+ # Email: justin@hasecuritysolution.com
+ # Last Update: 12/9/2016
++# Contributor: Jeroen Rijken
++# Last Update: 15/11/2018
+ 
+ filter {
+   if "bro" in [tags] and "test_data" not in [tags] and "import" not in [tags] {
+@@ -14,10 +16,9 @@
+   if "bro" in [tags] and "test_data" not in [tags] and "import" not in [tags] {
+ #    stdout { codec => rubydebug }
+     elasticsearch {
+-      hosts => elasticsearch
+-      index => "logstash-bro-%{+YYYY.MM.dd}"
+-      template_name => "logstash"
+-      template => "/logstash-template.json"
++      hosts => "127.0.0.1"
++      index => "metrics-%{+YYYY.MM.dd}"
++      template => "/metrics-template.json"
+       template_overwrite => true
+     }
+   }

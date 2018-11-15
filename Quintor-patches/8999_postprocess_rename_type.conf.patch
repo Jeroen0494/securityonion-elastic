@@ -1,0 +1,18 @@
+--- 8999_postprocess_rename_type.conf	2018-11-15 12:05:38.547779772 +0100
++++ 8999_postprocess_rename_type.conf.new	2018-11-15 13:51:57.402510724 +0100
+@@ -1,8 +1,12 @@
+ # Author: Doug Burks
+ # Last Update: 12/10/2017
++# Contributor: Jeroen Rijken
++# Last update: 15/11/2018
+ 
+ filter {
+-    mutate {
+-	  rename => [ "type", "event_type" ]
+-	}
++    if "bro" in [tags] {
++        mutate {
++	      rename => [ "type", "event_type" ]
++	    }
++    }
+ }

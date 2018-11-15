@@ -1,7 +1,0 @@
-Package: *
-Pin: release o=Docker,a=trusty,l=Docker CE,c=stable
-Pin-Priority: 400
-
-Package: docker-ce
-Pin: release o=Docker,a=trusty,l=Docker CE,c=stable
-Pin-Priority: 500

@@ -1,0 +1,9 @@
+--- logstash-template.json	2018-11-15 12:05:38.547779772 +0100
++++ logstash-template.json.new	2018-11-15 14:35:45.441013806 +0100
+@@ -1,5 +1,5 @@
+ {  
+-  "index_patterns": ["logstash-ids-*", "logstash-firewall-*", "logstash-syslog-*", "logstash-bro-*", "logstash-import-*", "logstash-beats-*"],
++  "index_patterns": ["metrics-*"],
+   "version":50001,
+   "order" : 0,
+   "settings":{  

@@ -1,0 +1,37 @@
+--- logstash.conf.orig  2018-11-13 14:35:10.541001286 +0100
++++ logstash.conf       2018-11-15 11:34:54.916266834 +0100
+@@ -68,19 +68,21 @@
+ }
+ 
+ output {
+-  if [event_type] and [event_type] != 'stats' {
+-    elasticsearch {
+-      hosts => "127.0.0.1"
+-      index => "logstash-%{event_type}-%{+YYYY.MM.dd}"
+-      template_overwrite => true
+-      template => "/etc/logstash/elasticsearch6-template.json"
+-    }
+-  } else {
+-    elasticsearch {
+-      hosts => "127.0.0.1"
+-      index => "logstash-%{+YYYY.MM.dd}"
+-      template_overwrite => true
+-      template => "/etc/logstash/elasticsearch6-template.json"
++  if [event_type] !~ /^bro\w+/ {
++    if [event_type] and [event_type] != 'stats' {
++      elasticsearch {
++        hosts => "127.0.0.1"
++        index => "logstash-%{event_type}-%{+YYYY.MM.dd}"
++        template_overwrite => true
++        template => "/etc/logstash/elasticsearch6-template.json"
++      }
++    } else {
++      elasticsearch {
++        hosts => "127.0.0.1"
++        index => "logstash-%{+YYYY.MM.dd}"
++        template_overwrite => true
++        template => "/etc/logstash/elasticsearch6-template.json"
++      }
+     }
+   }
+ }
