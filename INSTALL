@@ -1,0 +1,56 @@
+##### The following command are executed during ISO generation and only need to be re-run after updates to the repository. #####
+
+
+### START Setup Security Onion Logstash, Kibana and Bro setup ###
+
+# Clone the git repo containing Logstash and Kibana configuration files. Pull from remote for updates.
+git clone git@github.com:Jeroen0494/securityonion-elastic.git
+
+# Copy configuration files into place
+cp -r --backup=numbered /usr/src/securityonion-elastic/configfiles/ /etc/logstash/conf.d/
+
+mkdir -p /etc/syslog-ng/conf.d/
+cp -r --backup=numbered /usr/src/securityonion-elastic/etc/logstash/logstash-template.json /etc/logstash/conf.d/metrics-template.json
+cp -r --backup=numbered /usr/src/securityonion-elastic/etc/syslog-ng/syslog-ng.conf /etc/syslog-ng/conf.d/01-bro.conf
+
+
+# Patch Logstash configuration files
+cd /etc/logstash/
+patch -b metrics-template.json /usr/src/securityonion-elastic/Quintor-patches/metrics-template.json.patch
+
+cd /etc/logstash/conf.d/
+patch -b 8999_postprocess_rename_type.conf /usr/src/securityonion-elastic/Quintor-patches/8999_postprocess_rename_type.conf.patch
+patch -b 9000_output_bro.conf /usr/src/securityonion-elastic/Quintor-patches/9000_output_bro.conf.patch
+patch -b 0007_input_import.conf /usr/src/securityonion-elastic/Quintor-patches/0007_input_import.conf.patch
+mv 0007_input_import.conf 0007_input_import.conf.inactive
+
+
+# Patch SELKS Logstash configuration
+patch -b logstash.conf /usr/src/securityonion-elastic/Quintor-patches/logstash.conf.patch
+
+
+# Patch Kibana dashboards
+cd /usr/src/securityonion-elastic/
+cp -r --backup=numbered kibana kibana-Quintor
+cd /usr/src/securityonion-elastic/kibana-Quintor/dashboards
+patch -b < /usr/src/securityonion-elastic/Quintor-patches/kibana-dashboards.patch
+
+
+# Patch syslog-ng
+patch -b /etc/syslog-ng/conf.d/01-bro.conf /usr/src/securityonion-elastic/Quintor-patches/syslog-ng.conf.patch
+
+
+# Import Kibana dashboards
+cd /usr/src/securityonion-elastic/kibana-Quintor
+for file in *.json
+do
+    echo "Loading dashboard $file:"
+    curl -XPOST localhost:5601/api/kibana/dashboards/import -H 'kbn-xsrf:true' -H 'Content-Type: application/json' -d @./$file \
+        || exit 1
+    echo
+done
+
+# Setup permissions
+chown -R logstash:logstash /etc/logstash
+
+### END Setup Security Onion Logstash, Kibana and Bro setup ###

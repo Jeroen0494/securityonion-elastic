@@ -1,6 +1,6 @@
 { "attributes": 
 	{
-	  "defaultIndex": "*:logstash-*",
+	  "defaultIndex": "metrics-*",
 	  "discover:sampleSize":"10",
 	  "dashboard:defaultDarkTheme":true,
 	  "timepicker:timeDefaults":"{\n  \"from\": \"now-24h\",\n  \"to\": \"now\",\n  \"mode\": \"quick\"\n}"
