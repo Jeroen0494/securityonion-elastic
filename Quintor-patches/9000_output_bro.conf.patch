@@ -19,7 +19,7 @@
 -      template => "/logstash-template.json"
 +      hosts => "127.0.0.1"
 +      index => "metrics-%{+YYYY.MM.dd}"
-+      template => "/metrics-template.json"
++      template => "/etc/logstash/metrics-template.json"
        template_overwrite => true
      }
    }

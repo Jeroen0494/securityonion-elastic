@@ -1,6 +1,6 @@
---- syslog-ng.conf	2018-11-15 12:05:38.547779772 +0100
-+++ syslog-ng.conf.new	2018-11-15 15:07:10.928235267 +0100
-@@ -1,242 +1,91 @@
+--- syslog-ng.conf.orig	2018-11-15 12:05:38.547779772 +0100
++++ syslog-ng.conf	2018-11-20 10:56:58.147002862 +0100
+@@ -1,242 +1,90 @@
 -@version: 3.5
  source s_syslog { unix-dgram("/dev/log"); };
  
@@ -177,7 +177,6 @@
 +        source(s_bro_modbus); 
 +        source(s_bro_dnp3); 
 +        source(s_bro_rfb); 
-+        source(s_ossec);
 +        source(s_network);
 +        source(s_syslog);
 +        log { filter(f_bro_headers); flags(final); };
