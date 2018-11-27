@@ -1,0 +1,29 @@
+--- 8504_postprocess_freq_analysis_bro_ssl.conf.orig	2018-11-23 15:46:07.353855480 +0100
++++ 8504_postprocess_freq_analysis_bro_ssl.conf	2018-11-23 15:47:10.341318503 +0100
+@@ -21,7 +21,7 @@
+       }
+       rest {
+         request => {
+-          url => "http://freqserver:10004/measure1/%{freq_common_name}"
++          url => "http://localhost:10004/measure1/%{freq_common_name}"
+         }
+         sprintf => true
+         json => false
+@@ -46,7 +46,7 @@
+       }
+       rest {
+         request => {
+-          url => "http://freqserver:10004/measure1/%{freq_common_name}"
++          url => "http://localhost:10004/measure1/%{freq_common_name}"
+         }
+         sprintf => true
+         json => false
+@@ -71,7 +71,7 @@
+       }
+       rest {
+         request => {
+-          url => "http://freqserver:10004/measure1/%{freq_common_name}"
++          url => "http://localhost:10004/measure1/%{freq_common_name}"
+         }
+         sprintf => true
+         json => false

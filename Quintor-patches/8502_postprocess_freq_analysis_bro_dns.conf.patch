@@ -1,0 +1,29 @@
+--- 8502_postprocess_freq_analysis_bro_dns.conf.orig	2018-11-23 15:46:07.345855573 +0100
++++ 8502_postprocess_freq_analysis_bro_dns.conf	2018-11-23 15:47:01.261374020 +0100
+@@ -22,7 +22,7 @@
+         }
+         rest {
+           request => {
+-            url => "http://freqserver:10004/measure1/%{freq_highest_registered_domain}"
++            url => "http://localhost:10004/measure1/%{freq_highest_registered_domain}"
+           }
+           sprintf => true
+ 	        json => false
+@@ -47,7 +47,7 @@
+         }
+         rest {
+           request => {
+-            url => "http://freqserver:10004/measure1/%{freq_parent_domain}"
++            url => "http://localhost:10004/measure1/%{freq_parent_domain}"
+           }
+           sprintf => true
+ 	        json => false
+@@ -72,7 +72,7 @@
+         }
+         rest {
+           request => {
+-            url => "http://freqserver:10004/measure1/%{freq_subdomain}"
++            url => "http://localhost:10004/measure1/%{freq_subdomain}"
+           }
+           sprintf => true
+ 	  json => false

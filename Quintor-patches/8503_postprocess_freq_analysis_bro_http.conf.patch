@@ -1,0 +1,11 @@
+--- 8503_postprocess_freq_analysis_bro_http.conf.orig	2018-11-23 15:46:07.349855528 +0100
++++ 8503_postprocess_freq_analysis_bro_http.conf	2018-11-23 15:47:05.773345578 +0100
+@@ -14,7 +14,7 @@
+       }
+       rest {
+         request => {
+-          url => "http://freqserver:10004/measure1/%{freq_virtual_host}"
++          url => "http://localhost:10004/measure1/%{freq_virtual_host}"
+         }
+         sprintf => true
+         json => false
