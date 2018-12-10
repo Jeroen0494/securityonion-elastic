@@ -1,14 +1,14 @@
---- syslog-ng.conf.orig	2018-11-15 12:05:38.547779772 +0100
-+++ syslog-ng.conf	2018-11-20 10:56:58.147002862 +0100
-@@ -1,242 +1,90 @@
+diff --git a/etc/syslog-ng/syslog-ng.conf b/etc/syslog-ng/syslog-ng.conf
+index afc8cd6..1fc6d9b 100644
+--- a/etc/syslog-ng/syslog-ng.conf
++++ b/etc/syslog-ng/syslog-ng.conf
+@@ -1,4 +1,3 @@
 -@version: 3.5
  source s_syslog { unix-dgram("/dev/log"); };
  
  source s_network {
--	tcp();
--	udp();
-+        tcp();
-+        udp();
+@@ -6,63 +5,49 @@ source s_network {
+ 	udp();
  };
  
 -parser p_db {
@@ -38,8 +38,7 @@
 +source s_bro_conn { file("/var/log/bro/current/conn.log" flags(no-parse) program_override("bro_conn")); };
  source s_bro_http { 
 -	file("/nsm/bro/logs/current/http.log" flags(no-parse) program_override("bro_http")); 
-+        file("/var/log/bro/current/http_ens18.log" flags(no-parse) program_override("bro_http"));
-+
++	file("/var/log/bro/current/http_ens18.log" flags(no-parse) program_override("bro_http")); 
  };
 -source s_bro_dns { file("/nsm/bro/logs/current/dns.log" flags(no-parse) program_override("bro_dns")); };
 -source s_bro_files { file("/nsm/bro/logs/current/files.log" flags(no-parse) program_override("bro_files")); };
@@ -69,6 +68,8 @@
 -source s_bro_modbus { file("/nsm/bro/logs/current/modbus.log" flags(no-parse) program_override("bro_modbus")); };
 -source s_bro_dnp3 { file("/nsm/bro/logs/current/dnp3.log" flags(no-parse) program_override("bro_dnp3")); };
 -source s_bro_rfb { file("/nsm/bro/logs/current/rfb.log" flags(no-parse) program_override("bro_rfb")); };
+-
+-destination d_elsa { program("sh /opt/elsa/contrib/securityonion/contrib/securityonion-elsa-syslog-ng.sh" template(t_db_parsed)); };
 +source s_bro_dns { file("/var/log/bro/current/dns.log" flags(no-parse) program_override("bro_dns")); };
 +source s_bro_files { file("/var/log/bro/current/files.log" flags(no-parse) program_override("bro_files")); };
 +source s_bro_dhcp { file("/var/log/bro/current/dhcp.log" flags(no-parse) program_override("bro_dhcp")); };
@@ -99,43 +100,30 @@
 +source s_bro_modbus { file("/var/log/bro/current/modbus.log" flags(no-parse) program_override("bro_modbus")); };
 +source s_bro_dnp3 { file("/var/log/bro/current/dnp3.log" flags(no-parse) program_override("bro_dnp3")); };
 +source s_bro_rfb { file("/var/log/bro/current/rfb.log" flags(no-parse) program_override("bro_rfb")); };
- 
--destination d_elsa { program("sh /opt/elsa/contrib/securityonion/contrib/securityonion-elsa-syslog-ng.sh" template(t_db_parsed)); };
++
 +destination d_logstash { tcp("127.0.0.1" port(6050) template("$(format-json --scope selected_macros --scope nv_pairs --exclude DATE --key ISODATE)\n")); };
  
  log { 
--	source(s_bro_conn);
--	source(s_bro_http);
--	source(s_bro_dns);
--	source(s_bro_weird);
--  	source(s_bro_tunnels);
--	source(s_bro_syslog);
--	source(s_bro_ftp);
--	source(s_bro_files);
--	source(s_bro_dhcp);
--	source(s_bro_notice);
--	source(s_bro_smtp);
--	source(s_bro_smtp_entities);
--	source(s_bro_ssl);
--   	source(s_bro_irc);
--	source(s_bro_software);    
--  	source(s_bro_ssh); 
--  	source(s_bro_intel); 
--  	source(s_bro_x509); 
--  	source(s_bro_snmp); 
--  	source(s_bro_radius); 
--  	source(s_bro_mysql); 
--  	source(s_bro_kerberos); 
--  	source(s_bro_rdp); 
--  	source(s_bro_pe); 
--  	source(s_bro_sip); 
--  	source(s_bro_modbus); 
--  	source(s_bro_dnp3); 
--  	source(s_bro_rfb); 
+ 	source(s_bro_conn);
+@@ -81,6 +66,10 @@ log {
+    	source(s_bro_irc);
+ 	source(s_bro_software);    
+   	source(s_bro_ssh); 
++	source(s_bro_smb_mapping);
++	source(s_bro_smb_files);
++	source(s_bro_ntlm);
++	source(s_bro_dce_rpc);
+   	source(s_bro_intel); 
+   	source(s_bro_x509); 
+   	source(s_bro_snmp); 
+@@ -93,150 +82,8 @@ log {
+   	source(s_bro_modbus); 
+   	source(s_bro_dnp3); 
+   	source(s_bro_rfb); 
 -	source(s_ossec);
 -	source(s_ossec_archive);
--	source(s_network);
--	source(s_syslog);
+ 	source(s_network);
+ 	source(s_syslog);
 -	rewrite(r_host);
 -	rewrite(r_cisco_program);
 -	rewrite(r_snare);
@@ -143,44 +131,9 @@
 -	rewrite(r_pipes);
 -	parser(p_db);
 -	rewrite(r_extracted_host); 
--	log { filter(f_bro_headers); flags(final); };
+ 	log { filter(f_bro_headers); flags(final); };
 -	log { destination(d_elsa); };
-+        source(s_bro_conn);
-+        source(s_bro_http);
-+        source(s_bro_dns);
-+        source(s_bro_weird);
-+        source(s_bro_tunnels);
-+        source(s_bro_syslog);
-+        source(s_bro_ftp);
-+        source(s_bro_files);
-+        source(s_bro_dhcp);
-+        source(s_bro_notice);
-+        source(s_bro_smtp);
-+        source(s_bro_smtp_entities);
-+        source(s_bro_ssl);
-+        source(s_bro_irc);
-+        source(s_bro_software);    
-+        source(s_bro_ssh); 
-+        source(s_bro_smb_mapping);
-+        source(s_bro_smb_files);
-+        source(s_bro_ntlm);
-+        source(s_bro_dce_rpc);
-+        source(s_bro_intel); 
-+        source(s_bro_x509); 
-+        source(s_bro_snmp); 
-+        source(s_bro_radius); 
-+        source(s_bro_mysql); 
-+        source(s_bro_kerberos); 
-+        source(s_bro_rdp); 
-+        source(s_bro_pe); 
-+        source(s_bro_sip); 
-+        source(s_bro_modbus); 
-+        source(s_bro_dnp3); 
-+        source(s_bro_rfb); 
-+        source(s_network);
-+        source(s_syslog);
-+        log { filter(f_bro_headers); flags(final); };
-+        log { destination(d_logstash); };
++	log { destination(d_logstash); };
  };
 -# Bring it all back
 -#source s_src {
