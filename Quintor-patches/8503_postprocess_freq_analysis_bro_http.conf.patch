@@ -5,7 +5,7 @@
        rest {
          request => {
 -          url => "http://freqserver:10004/measure1/%{freq_virtual_host}"
-+          url => "http://localhost:10004/measure1/%{freq_virtual_host}"
++          url => "http://localhost:10004/measure/%{freq_virtual_host}"
          }
          sprintf => true
          json => false

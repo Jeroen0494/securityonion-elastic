@@ -5,7 +5,7 @@
          rest {
            request => {
 -            url => "http://freqserver:10004/measure1/%{freq_highest_registered_domain}"
-+            url => "http://localhost:10004/measure1/%{freq_highest_registered_domain}"
++            url => "http://localhost:10004/measure/%{freq_highest_registered_domain}"
            }
            sprintf => true
  	        json => false
@@ -14,7 +14,7 @@
          rest {
            request => {
 -            url => "http://freqserver:10004/measure1/%{freq_parent_domain}"
-+            url => "http://localhost:10004/measure1/%{freq_parent_domain}"
++            url => "http://localhost:10004/measure/%{freq_parent_domain}"
            }
            sprintf => true
  	        json => false
@@ -23,7 +23,7 @@
          rest {
            request => {
 -            url => "http://freqserver:10004/measure1/%{freq_subdomain}"
-+            url => "http://localhost:10004/measure1/%{freq_subdomain}"
++            url => "http://localhost:10004/measure/%{freq_subdomain}"
            }
            sprintf => true
  	  json => false
