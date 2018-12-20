@@ -1,5 +1,5 @@
---- 8505_postprocess_freq_analysis_bro_x509.conf.orig	2018-11-23 15:46:07.357855435 +0100
-+++ 8505_postprocess_freq_analysis_bro_x509.conf	2018-11-23 15:47:19.201270787 +0100
+--- 8505_postprocess_freq_analysis_bro_x509.conf	2018-12-20 14:38:02.894967237 +0100
++++ 8505_postprocess_freq_analysis_bro_x509.conf.orig	2018-12-20 14:34:22.073580257 +0100
 @@ -21,7 +21,7 @@
        }
        rest {

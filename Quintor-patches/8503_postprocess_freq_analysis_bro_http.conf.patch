@@ -1,5 +1,5 @@
---- 8503_postprocess_freq_analysis_bro_http.conf.orig	2018-11-23 15:46:07.349855528 +0100
-+++ 8503_postprocess_freq_analysis_bro_http.conf	2018-11-23 15:47:05.773345578 +0100
+--- 8503_postprocess_freq_analysis_bro_http.conf	2018-12-20 14:37:45.158742891 +0100
++++ 8503_postprocess_freq_analysis_bro_http.conf.orig	2018-12-20 14:34:22.069580243 +0100
 @@ -14,7 +14,7 @@
        }
        rest {

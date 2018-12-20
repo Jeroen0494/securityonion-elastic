@@ -1,5 +1,5 @@
---- 8502_postprocess_freq_analysis_bro_dns.conf.orig	2018-11-23 15:46:07.345855573 +0100
-+++ 8502_postprocess_freq_analysis_bro_dns.conf	2018-11-23 15:47:01.261374020 +0100
+--- 8502_postprocess_freq_analysis_bro_dns.conf	2018-12-20 14:37:03.354191646 +0100
++++ 8502_postprocess_freq_analysis_bro_dns.conf.orig	2018-12-20 14:34:22.069580243 +0100
 @@ -22,7 +22,7 @@
          }
          rest {

@@ -1,5 +1,5 @@
---- 8504_postprocess_freq_analysis_bro_ssl.conf.orig	2018-11-23 15:46:07.353855480 +0100
-+++ 8504_postprocess_freq_analysis_bro_ssl.conf	2018-11-23 15:47:10.341318503 +0100
+--- 8504_postprocess_freq_analysis_bro_ssl.conf	2018-12-20 14:37:55.070868946 +0100
++++ 8504_postprocess_freq_analysis_bro_ssl.conf.orig	2018-12-20 14:34:22.073580257 +0100
 @@ -21,7 +21,7 @@
        }
        rest {
