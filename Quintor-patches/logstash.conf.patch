@@ -1,6 +1,78 @@
---- logstash.conf.orig  2018-11-13 14:35:10.541001286 +0100
-+++ logstash.conf       2018-11-15 11:34:54.916266834 +0100
-@@ -68,19 +68,21 @@
+--- logstash.conf.orig	2018-11-12 11:18:15.000000000 +0100
++++ logstash.conf	2018-12-21 11:02:03.307433983 +0100
+@@ -6,12 +6,11 @@
+     codec =>   json 
+     type => "SELKS" 
+   }
+-
+ }
+ 
+ filter {
+   if [type] == "SELKS" {
+-    
++
+     date {
+       match => [ "timestamp", "ISO8601" ]
+     }
+@@ -32,55 +31,57 @@
+           end
+         end
+       "
+-     }
++    }
+   
+     metrics {
+       meter => [ "eve_insert" ]
+       add_tag => "metric"
+       flush_interval => 30
+     }
+-  }
+ 
+-  if [http] {
+-    useragent {
+-       source => "[http][http_user_agent]"
+-       target => "[http][user_agent]"
++    if [http] {
++      useragent {
++         source => "[http][http_user_agent]"
++         target => "[http][user_agent]"
++      }
++    }
++    if [src_ip]  {
++      geoip {
++        source => "src_ip" 
++        target => "geoip" 
++        #database => "/opt/logstash/vendor/geoip/GeoLiteCity.dat" 
++        #add_field => [ "[geoip][coordinates]", "%{[geoip][longitude]}" ]
++        #add_field => [ "[geoip][coordinates]", "%{[geoip][latitude]}"  ]
++      }
+     }
+-  }
+-  if [src_ip]  {
+-    geoip {
+-      source => "src_ip" 
+-      target => "geoip" 
+-      #database => "/opt/logstash/vendor/geoip/GeoLiteCity.dat" 
+-      #add_field => [ "[geoip][coordinates]", "%{[geoip][longitude]}" ]
+-      #add_field => [ "[geoip][coordinates]", "%{[geoip][latitude]}"  ]
+-    }
+-  }
+     if [dest_ip]  {
+-    geoip {
+-      source => "dest_ip" 
+-      target => "geoip" 
+-      #database => "/opt/logstash/vendor/geoip/GeoLiteCity.dat" 
+-      #add_field => [ "[geoip][coordinates]", "%{[geoip][longitude]}" ]
+-      #add_field => [ "[geoip][coordinates]", "%{[geoip][latitude]}"  ]
++      geoip {
++        source => "dest_ip" 
++        target => "geoip" 
++        #database => "/opt/logstash/vendor/geoip/GeoLiteCity.dat" 
++        #add_field => [ "[geoip][coordinates]", "%{[geoip][longitude]}" ]
++        #add_field => [ "[geoip][coordinates]", "%{[geoip][latitude]}"  ]
++      }
+     }
+   }
  }
  
  output {
@@ -17,7 +89,7 @@
 -      index => "logstash-%{+YYYY.MM.dd}"
 -      template_overwrite => true
 -      template => "/etc/logstash/elasticsearch6-template.json"
-+  if [event_type] !~ /^bro\w+/ {
++  if [type] == "SELKS" {
 +    if [event_type] and [event_type] != 'stats' {
 +      elasticsearch {
 +        hosts => "127.0.0.1"
